@@ -2,4 +2,4 @@
 
 Temporary module for BMI histogram in Linux terminal
 
-![App screen](/img/screen.png)
+![App screen](/.img/screen.png)

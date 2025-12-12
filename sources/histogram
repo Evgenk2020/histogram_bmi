@@ -1,0 +1,6 @@
+#!/bin/bash
+
+curr=$(dirname $(realpath $0))
+$curr/bin/histogram
+
+exec $SHELL

@@ -1,22 +1,10 @@
 cmake_minimum_required(VERSION 3.31)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-#set(CMAKE_BUILD_TYPE Debug)
+SET(CMAKE_CXX_STANDARD 20)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_BINARY_DIR app)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/shared)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/static)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/bin)
 
-project(histogram LANGUAGES CXX)
+project(histogram VERSION 0.0.1 LANGUAGES CXX)
 
-set(SRC src/main.cpp)
-
-#add_library(one STATIC lib/*.h lib/*.cpp)
-#add_library(two SHARED lib/*.h lib/*.cpp)
-
-add_executable(${CMAKE_PROJECT_NAME} ${SRC})
-#target_link_libraries(${CMAKE_PROJECT_NAME} one)
-#target_link_libraries(${CMAKE_PROJECT_NAME} two)
+add_executable(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/src/main.cpp)
