@@ -1,41 +1,54 @@
-#include <iostream>
-#include <vector>
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <map>
+#include <vector>
+#include <format>
 
 void print_line();
 
 int main()
 {
-    std::vector<float> age_types = {15.5, 18.0, 24.5, 29.5, 34.5, 39.5};
-    const auto [min, max] = std::minmax_element(std::cbegin(age_types), std::cend(age_types));
-    const float l_minimum = 0.0f;
-    const float l_maximum = 10.0f;
-    std::vector<std::div_t> div_te_vector;
+    std::vector<float> age_types{15.5f, 18.0f, 24.5f, 29.5f, 34.5f, 39.5f};
 
-    std::map<int, std::string> columns{
-        {0, {(char)0xf0, (char)0x9f, (char)0x9f, (char)0xa6}},
-        {1, {(char)0xf0, (char)0x9f, (char)0x9f, (char)0xaa}},
-        {2, {(char)0xf0, (char)0x9f, (char)0x9f, (char)0xa9}},
-        {3, {(char)0xf0, (char)0x9f, (char)0x9f, (char)0xa8}},
-        {4, {(char)0xf0, (char)0x9f, (char)0x9f, (char)0xa7}},
-        {5, {(char)0xf0, (char)0x9f, (char)0x9f, (char)0xa5}}};
+    const auto [min_it, max_it] = std::minmax_element(age_types.begin(), age_types.end());
 
-    for (auto &a : age_types)
+    constexpr float l_minimum = 0.0f;
+    constexpr float l_maximum = 10.0f;
+
+    std::vector<int> heights;
+    heights.reserve(age_types.size());
+
+    const std::map<int, std::string> columns{
+        {0, std::string{static_cast<char>(0xF0), static_cast<char>(0x9F), static_cast<char>(0x9F), static_cast<char>(0xA6)}},
+        {1, std::string{static_cast<char>(0xF0), static_cast<char>(0x9F), static_cast<char>(0x9F), static_cast<char>(0xAA)}},
+        {2, std::string{static_cast<char>(0xF0), static_cast<char>(0x9F), static_cast<char>(0x9F), static_cast<char>(0xA9)}},
+        {3, std::string{static_cast<char>(0xF0), static_cast<char>(0x9F), static_cast<char>(0x9F), static_cast<char>(0xA8)}},
+        {4, std::string{static_cast<char>(0xF0), static_cast<char>(0x9F), static_cast<char>(0x9F), static_cast<char>(0xA7)}},
+        {5, std::string{static_cast<char>(0xF0), static_cast<char>(0x9F), static_cast<char>(0x9F), static_cast<char>(0xA5)}}};
+
+    /* linear height interpolation */
+    for (float age : age_types)
     {
-        float _linear_interpolation = std::lerp(l_minimum, l_maximum, (a - *min) / (*max - *min));
-        div_te_vector.push_back(std::div(static_cast<int>(_linear_interpolation), 1));
+        const float t = (age - *min_it) / (*max_it - *min_it);
+        const float scaled = std::lerp(l_minimum, l_maximum, t);
+        heights.push_back(static_cast<int>(scaled));
     }
 
-    int wil = static_cast<int>(l_maximum);
-    while (wil--)
+    /* draw */
+    for (int level = static_cast<int>(l_maximum) - 1; level >= 0; level--)
     {
-        int i = 0;
-        for (auto &a : div_te_vector)
+        for (std::size_t i = 0; i < heights.size(); i++)
         {
-            (a.quot < wil) ? (std::cout << "   ") : ((a.quot == wil) ? (std::cout << columns.at(i) << ' ') : (std::cout << columns.at(i) << ' '));
-            i++;
+            if (heights[i] >= level)
+            {
+                std::cout << columns.find(static_cast<int>(i))->second << ' ';
+            }
+
+            else
+            {
+                std::cout << std::format("{:3}", "");
+            }
         }
 
         std::cout << std::endl;
@@ -43,12 +56,13 @@ int main()
 
     print_line();
 
-    for (auto &a : age_types)
+    for (float age : age_types)
     {
-        std::cout << a << ' ';
+        std::cout << age << ' ';
     }
 
     std::cout << std::endl;
+
     print_line();
 
     return 0;
@@ -56,10 +70,11 @@ int main()
 
 void print_line()
 {
-    const std::string str{(char)0xf0, (char)0x9f, (char)0x9e, (char)0x84};
-    for (int i = 0; i < 45; i++)
+    const std::string sep{static_cast<char>(0xF0), static_cast<char>(0x9F), static_cast<char>(0x9E), static_cast<char>(0x84)};
+
+    for (int i = 0; i < 45; ++i)
     {
-        std::cout << str;
+        std::cout << sep;
     }
 
     std::cout << std::endl;
